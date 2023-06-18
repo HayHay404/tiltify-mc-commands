@@ -3,14 +3,14 @@
     "@types/node": "^20.3.1",
     "typescript": "^5.1.3"
   },
-  "name": "twitch_mc_commands",
+  "name": "tiltify-mc-commands",
   "version": "1.0.0",
   "description": "Small twitch bot to listen to tiltify donos and send mc commands",
   "main": "index.js",
   "scripts": {
-    "start": "npx tsc && node dist/index.js",
+    "start": "pnpx tsc && node dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "HayHay",
+  "author": "HayHay404",
   "license": "MIT"
 }
