@@ -71,8 +71,6 @@ class CommandMap {
       return this.customCommands[commandParams.command]();
     }
 
-    console.log(`Running command: ${commandParams.command}`);
-
     return [commandParams.command];
   }
 }
