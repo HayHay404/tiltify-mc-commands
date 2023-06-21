@@ -15,7 +15,8 @@ const tiltify = new TiltifyAPI();
 async function main() {
   await tiltify.generateAccessToken();
   await minecraft.connectClient().then(() => {
-    minecraft.sendCommand("say Tiltify integration is now running!");
+    // Broadcast requires essentialsX, alternatively use "say"
+    minecraft.sendCommand("broadcast Tiltify integration is now running!");
     minecraft.disconnectClient();
   });
 }
@@ -40,7 +41,8 @@ app.post("/tiltify/webhook", async (req, res) => {
   const donationAmount = data.amount.value;
   const donorName = data.donor_name;
 
-  const donationMessageCommand = `say Thanks ${donorName} for donating ${donationAmount}! ${
+  // Broadcast requires essentialsX, alternatively use "say"
+  const donationMessageCommand = `broadcast Thanks ${donorName} for donating ${donationAmount}! ${
     data.message ? data.message : ""
   }`;
   await minecraft.connectClient().then(() => {

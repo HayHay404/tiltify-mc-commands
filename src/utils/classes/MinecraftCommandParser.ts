@@ -31,11 +31,18 @@ export default class MinecraftCommandParser {
     await this.client.connect();
   }
 
-  sendCommand(command: string) {
+  async sendCommand(command: string) {
     if (command.startsWith("/")) {
       command = command.substring(1);
     }
-    this.client.send(command);
+    try {
+      const resp = await this.client.send(command);
+      if (resp.includes("Unknown command.")) {
+        throw new Error("Unknown command.");
+      }
+    } catch (e) {
+      console.log("ERROR: Failed to send command to Minecraft server.");
+    }
   }
 
   async disconnectClient() {
