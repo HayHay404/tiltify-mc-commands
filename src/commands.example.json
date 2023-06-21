@@ -1,29 +1,39 @@
 {
-    "commands": [
-        {
-            "value": 10,
-            "command": "customFunction1",
-            "function": true
-        },
-        {
-            "value": 25,
-            "command": "/say Thank you for your generous $25 donation!",
-            "function": false
-        },
-        {
-            "value": 50,
-            "command": "/give @p diamond 5",
-            "function": false
-        },
-        {
-            "value": 100,
-            "command": "customFunction2",
-            "function": true
-        },
-        {
-            "value": 200,
-            "command": "/tell @a Happy holidays, thanks to the $200 donation from <donor>!",
-            "function": false
-        }
-    ]
+  "commands": [
+    {
+      "value": 1.00,
+      "command": "/effect give HayHayIsALoser minecraft:instant_damage 1",
+      "function": false
+    },
+    {
+      "value": 3.00,
+      "command": "summonFarmAnimals",
+      "function": true
+    },
+    {
+      "value": 5.00,
+      "command": "/minecraft:tp HayHayIsALoser ~ ~50 ~",
+      "function": false
+    },
+    {
+      "value": 7.00,
+      "command": "giveRandomPotionEffect",
+      "function": true
+    },
+    {
+      "value": 10.00,
+      "command": "/say Maid Outfit time!!",
+      "function": false
+    },
+    {
+      "value": 15.00,
+      "command": "/summon warden",
+      "function": false
+    },
+    {
+      "value": 50.00,
+      "command": "/summon wither",
+      "function": false
+    }
+  ]
 }
