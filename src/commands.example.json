@@ -12,8 +12,8 @@
     },
     {
       "value": 5.00,
-      "command": "/minecraft:tp HayHayIsALoser ~ ~50 ~",
-      "function": false
+      "command": "randomHeight",
+      "function": true
     },
     {
       "value": 7.00,
@@ -22,17 +22,17 @@
     },
     {
       "value": 10.00,
-      "command": "/say Maid Outfit time!!",
+      "command": "/broadcast Maid Outfit time!!",
       "function": false
     },
     {
       "value": 15.00,
-      "command": "/summon warden",
-      "function": false
+      "command": "randomSummon",
+      "function": true
     },
     {
       "value": 50.00,
-      "command": "/summon wither",
+      "command": "/ban HayHayIsALoser",
       "function": false
     }
   ]
