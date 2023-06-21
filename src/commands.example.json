@@ -1,0 +1,29 @@
+{
+    "commands": [
+        {
+            "value": 10,
+            "command": "customFunction1",
+            "function": true
+        },
+        {
+            "value": 25,
+            "command": "/say Thank you for your generous $25 donation!",
+            "function": false
+        },
+        {
+            "value": 50,
+            "command": "/give @p diamond 5",
+            "function": false
+        },
+        {
+            "value": 100,
+            "command": "customFunction2",
+            "function": true
+        },
+        {
+            "value": 200,
+            "command": "/tell @a Happy holidays, thanks to the $200 donation from <donor>!",
+            "function": false
+        }
+    ]
+}
