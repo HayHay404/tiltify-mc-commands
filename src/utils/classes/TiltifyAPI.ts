@@ -28,29 +28,33 @@ export default class TiltifyAPI {
   }
 
   async generateAccessToken() {
-    const url = "https://v5api.tiltify.com/oauth/token";
-    const params = {
-      client_id: this.tiltifyClientId,
-      client_secret: this.tiltifyClientSecret,
-      grant_type: "client_credentials",
-      scope: "public webhooks:write",
-    };
-    const resp = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(params),
-    });
-
-    if (resp.status == 200) {
-      const jsonOutput = await resp.json();
-      this.accessToken = "Bearer " + jsonOutput.access_token;
-      return jsonOutput.access_token;
-    } else {
-      throw new Error(
-        "ERROR: Could not authenticate with Tiltify. Double check your credentials."
-      );
+    try {
+      const url = "https://v5api.tiltify.com/oauth/token";
+      const params = {
+        client_id: this.tiltifyClientId,
+        client_secret: this.tiltifyClientSecret,
+        grant_type: "client_credentials",
+        scope: "public webhooks:write",
+      };
+      const resp = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(params),
+      });
+  
+      if (resp.status == 200) {
+        const jsonOutput = await resp.json();
+        this.accessToken = "Bearer " + jsonOutput.access_token;
+        return jsonOutput.access_token;
+      } else {
+        throw new Error(
+          "ERROR: Could not authenticate with Tiltify. Double check your credentials."
+        );
+      }
+    } catch (error) {
+      console.log(error);
     }
   }
 

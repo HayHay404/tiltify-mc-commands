@@ -1,25 +1,24 @@
 import { config } from "dotenv";
 import TiltifyAPI from "./utils/classes/TiltifyAPI";
 import express from "express";
-import MinecraftCommandParser from "./utils/classes/MinecraftCommandParser";
 import CommandMap from "./utils/classes/CommandMap";
+import expressWs from "express-ws";
+import { exit } from "process";
 config({});
 
 const app = express();
 app.use(express.json());
+const wsInstance = expressWs(app);
 const port = 3000;
-const minecraft = new MinecraftCommandParser();
 const commandMap = new CommandMap();
 const tiltify = new TiltifyAPI();
 
-async function main() {
-  await tiltify.generateAccessToken();
-  await minecraft.connectClient().then(() => {
-    // Broadcast requires essentialsX, alternatively use "say"
-    minecraft.sendCommand("broadcast Tiltify integration is now running!");
-    minecraft.disconnectClient();
-  });
-}
+const wsConnection = new Map();
+
+wsInstance.app.ws("/tiltify/ws", (ws, req) => {
+  ws.send("broadcast Connected to Websocket Server");
+  wsConnection.set(ws, req);
+});
 
 app.post("/tiltify/webhook", async (req, res) => {
   const event = req.body;
@@ -42,15 +41,24 @@ app.post("/tiltify/webhook", async (req, res) => {
   const donorName = data.donor_name;
 
   // Broadcast requires essentialsX, alternatively use "say"
-  const donationMessageCommand = `broadcast Thanks ${donorName} for donating ${donationAmount}! ${
+  const donationMessageCommand = `/broadcast Thanks ${donorName} for donating ${donationAmount}! ${
     data.message ? data.message : ""
   }`;
-  await minecraft.connectClient().then(() => {
-    minecraft.sendCommand(donationMessageCommand);
-    const command = commandMap.getCommandByValue(donationAmount);
-    minecraft.sendCommand(command);
-    minecraft.disconnectClient();
+
+  console.log(donationMessageCommand);
+  wsConnection.forEach((_, ws) => {
+    console.log("Sending " + donationMessageCommand + " to client");
+    ws.send(donationMessageCommand);
   });
+  const commands = commandMap.getCommandByValue(donationAmount);
+  if (commands) {
+    commands.forEach(async (command) => {
+      wsConnection.forEach((_, ws) => {
+        console.log("Sending " + command + " to client");
+        ws.send(command);
+      });
+    });
+  }
 
   res.status(200).end(); // Respond with a success status
 });
@@ -58,8 +66,9 @@ app.post("/tiltify/webhook", async (req, res) => {
 app.listen(port, async () => {
   console.log(`Application listening at http://localhost:${port}`);
   try {
-    main();
+    await tiltify.generateAccessToken();
   } catch (e) {
-    throw e;
+    console.log(e);
+    exit(1);
   }
 });

@@ -6,9 +6,9 @@ class CommandMap {
   commandMap: Map<number, Command> | null;
   customCommands: CustomCommands;
   constructor() {
+    this.customCommands = new CustomCommands();
     this.commands = commandsJson["commands"] as Command[];
     this.commandMap = this.createCommandMapRange();
-    this.customCommands = new CustomCommands();
   }
 
   createCommandMapRange() {
@@ -35,27 +35,45 @@ class CommandMap {
 
   validateFunctionCommand(command: string) {
     try {
-      return typeof this.customCommands[command] === "function";
+      return typeof this.customCommands[command]() === "object";
     } catch (e) {
       console.log(`ERROR: Custom command ${command} is not a function.`);
       return false;
     }
   }
 
-  getCommandByValue(value: number) {
+  getCommandByValue(value: number): Array<string> {
     if (!this.commandMap) {
       throw new Error("ERROR: Command map has not been loaded.");
     }
 
-    if (!this.commandMap.has(value)) {
-      const sortedKeys = [...this.commandMap.keys()].sort((a, b) => a - b);
-      const closestKey = sortedKeys.reduce((prev, curr) =>
-        Math.abs(curr - value) < Math.abs(prev - value) ? curr : prev
-      );
-      return this.commandMap.get(closestKey)!["command"];
+    if (value < 0) {
+      throw new Error("ERROR: Value must be greater than 0.");
     }
 
-    return this.commandMap.get(value)!["command"];
+    value = Math.floor(value);
+
+    let commandParams = this.commandMap.get(value);
+
+    if (!commandParams) {
+      this.commandMap.forEach((command) => {
+        while (command.value <= value) {
+          commandParams = command;
+        }
+      });
+    }
+
+    if (!commandParams) {
+      throw new Error("ERROR: Command not found.");
+    }
+
+    if (commandParams.function === true) {
+      return this.customCommands[commandParams.command]();
+    }
+
+    console.log(`Running command: ${commandParams.command}`);
+
+    return [commandParams.command];
   }
 }
 
