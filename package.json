@@ -12,6 +12,7 @@
   "dependencies": {
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
+    "minecraft-rcon-client": "^2.1.2",
     "typescript": "^5.1.3"
   },
   "devDependencies": {
