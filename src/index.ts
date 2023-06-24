@@ -18,6 +18,19 @@ const wsConnection = new Map();
 wsInstance.app.ws("/tiltify/ws", (ws, req) => {
   ws.send("broadcast Connected to Websocket Server");
   wsConnection.set(ws, req);
+
+  const keepAliveInterval = setInterval(() => {
+    if (ws.readyState === ws.OPEN) {
+      ws.send("Ping");
+    }
+  }, 10000);
+
+  ws.on("close", () => {
+    wsConnection.delete(ws);
+
+    // Clear the keep-alive interval
+    clearInterval(keepAliveInterval);
+  });
 });
 
 app.post("/tiltify/webhook", async (req, res) => {
