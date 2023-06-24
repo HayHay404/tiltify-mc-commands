@@ -54,17 +54,19 @@ class CommandMap {
     value = Math.floor(value);
 
     let commandParams = this.commandMap.get(value);
-
     if (!commandParams) {
+      console.log("Checking for closest command..");
       this.commandMap.forEach((command) => {
-        while (command.value <= value) {
+        if (command.value <= value) {
           commandParams = command;
         }
       });
+      console.log(commandParams);
     }
 
     if (!commandParams) {
-      throw new Error("ERROR: Command not found.");
+      console.log("ERROR: Command not found.");
+      return [];
     }
 
     if (commandParams.function === true) {
