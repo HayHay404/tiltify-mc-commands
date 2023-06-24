@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  nodejsapp:
+    image: node:latest 
+    container_name: tiltify-mc-ws
+    volumes:
+      - .:/app
+    command: sh -c "cd /app && npm i -g pnpm@latest && pnpm install && pnpm run start"
+    ports:
+      - '3070:3000' 
