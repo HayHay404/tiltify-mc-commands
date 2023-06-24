@@ -63,7 +63,10 @@ export default class CustomCommands {
   randomHeight() {
     const randomHeight = Math.floor(Math.random() * 150);
 
-    return [`/execute as HayHayIsALoser at @p run tp ~ ~${randomHeight} ~`];
+    return [
+      `/minecraft:give HayHayIsALoser minecraft:water_bucket 1`,
+      `/execute as HayHayIsALoser at HayHayIsALoser run tp ~ ~${randomHeight} ~`,
+    ];
   }
 
   giveRandomPotionEffect() {
@@ -89,6 +92,6 @@ export default class CustomCommands {
     const randomPotionEffect =
       potionEffects[Math.floor(Math.random() * potionEffects.length)];
 
-    return [`/effect give @a ${randomPotionEffect} 30 1`];
+    return [`/effect give HayHayIsALoser ${randomPotionEffect} 30 1`];
   }
 }
